@@ -31,7 +31,8 @@ const Analysis = () => {
   ,["warm_start", "bool"], ["ccp_alpha", "flt"],["max_samples", "flt"]
 
 ];
-let paramString;
+const [paramString, setParamString] = useState("");
+const [classRef, setClassReg] = useState("");
 
   
   
@@ -47,7 +48,6 @@ let paramString;
   }
 
   const handleTestTrain =  async ( e ) =>{
-  
   
   
   }
@@ -69,7 +69,7 @@ let paramString;
 
       for (const [key, value] of Object.entries(sciLearnParams)) {
         
-          stringParam = stringParam+"'"+key+"'"+"="+value+",";
+          stringParam = stringParam+""+key+""+"="+value+",";
 
          
         
@@ -77,18 +77,33 @@ let paramString;
 
 
       }
-  paramString = stringParam;
+  setParamString(stringParam);
 
-
-  console.log(targetClass)
-    console.log(testSize)
-    console.log(paramString);
+ 
+    
     
 
 
   }
 
   const handleClassification =  async ( e ) =>{
+
+
+    console.log(csvJSON);
+    console.log(targetClass)
+      console.log(testSize)
+      console.log(paramString);
+
+    const data =  await axios.post(`${baseUrl}/show`, {
+      newJsonCsv: csvJSON,
+      ttestsize: testSize,
+      tgtClass: targetClass,
+      parameters: paramString,
+
+    
+  });
+
+  console.log(data.data)
   
   
   }
@@ -409,6 +424,9 @@ if(i != 0){
 
 
 })}
+
+
+<button  onClick ={ ()=> { handleClassification()}  } ><b>Done</b> </button>
 
   <p>Mean CV score</p>
 <p>Feature importance graph</p>
