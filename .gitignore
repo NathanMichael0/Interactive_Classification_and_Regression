@@ -105,7 +105,6 @@ dist
 
 .gitignore
 .gitignore~
-backend/node_modules/
 frontend/node_modules/
 .DS_Store
 frontend/.DS_Store
