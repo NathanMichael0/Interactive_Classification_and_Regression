@@ -32,7 +32,8 @@ const Analysis = () => {
 
 ];
 const [paramString, setParamString] = useState("");
-const [classRef, setClassReg] = useState("");
+const [classRegChoice, setClassRegChoice] = useState("");
+const [userChoice, setUserChoice] = useState(""); 
 
   
   
@@ -99,6 +100,7 @@ const [classRef, setClassReg] = useState("");
       ttestsize: testSize,
       tgtClass: targetClass,
       parameters: paramString,
+      classReg: classRegChoice
 
     
   });
@@ -247,8 +249,6 @@ return(
 
 }
 )
-
-
 }
 
 <br></br>
@@ -307,11 +307,65 @@ return(
 <button  onClick ={ ()=> { handleButtonChange()}  } > Done</button>
 
 
-    <h1> Classification</h1>
+{([1]).map((i,j) => {
+  if(userChoice === ""){
+    return(
+    <div>
+ <button onClick={(e) => setUserChoice("clf")}> Classification </button>
+<br></br>
+ <button onClick={(e) => setUserChoice("reg")}> Regression </button>
+
+    </div>
+     
+      
+    
+   
+)
+    
 
 
 
-  <p>  choose parameters for Logistic Regression * Optional</p>
+
+  }
+  else if (userChoice === "reg"){
+
+    return(
+    
+      <div> 
+        
+        <p> Regression</p>
+      
+      </div>
+     
+  )
+
+  }
+  else if (userChoice === "clf") {
+
+    if(classRegChoice === "" ){
+      return(
+      <div> 
+      
+      <button  onClick ={(e) =>  setClassRegChoice("logreg") }  > Logistic Regression</button>
+    <button  onClick ={ (e) => setClassRegChoice("linsvc") } > Linear SVC</button>
+    <button  onClick ={ (e) => setClassRegChoice("rand") } > Random Forest Classifier</button>
+    
+    </div>
+
+      )
+
+
+    }
+
+    else if (classRegChoice === "logreg" )
+    {
+
+      return(
+
+<div>
+
+
+<p>  choose parameters for Logistic Regression * Optional</p>
 {linRegParam.map((param,i) => {
 
 if(param[1] === "int" ){
@@ -430,9 +484,19 @@ if(i != 0){
 
   <p>Mean CV score</p>
 <p>Feature importance graph</p>
+</div>
+
+      )
 
 
-  <p>  Choose parameters for  Linear SVM Classifier * Optional</p>
+
+    }
+    else if (classRegChoice === "linsvc")
+    {
+      return(
+
+        <div>
+ <p>  Choose parameters for  Linear SVM Classifier * Optional</p>
   {linSVCParam.map((param,i) => {
 
 if(param[1] === "int" ){
@@ -549,9 +613,20 @@ if(i != 0){
   <p>Mean CV score</p>
  <p>Feature importance graph</p>
 
+        </div>
+      )
 
 
-  <p>  Choose parameters for RandomForestClassifier * Optional</p>
+      
+    } 
+  else
+    {
+
+      return(
+
+        <div>
+
+<p>  Choose parameters for RandomForestClassifier * Optional</p>
   {randForClf.map((param,i) => {
 
 if(param[1] === "int" ){
@@ -675,10 +750,26 @@ ROC Curves
 
 
 </p>
+          
+        </div>
+      )
+
+      
+    }
+
+
+  }
 
 
 
-    <h1> Regression</h1>
+
+})}
+
+
+
+
+
+
 
 </div>
    

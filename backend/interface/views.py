@@ -36,6 +36,7 @@ def show(request):
         newCsv = pd.DataFrame(json.loads(request.body)["newJsonCsv"])
         testSize = json.loads(request.body)["ttestsize"]
         parameterString =json.loads(request.body)["parameters"]
+        userChoice = json.loads(request.body)["classReg"]
 
         print(newCsv.head())
 
@@ -54,6 +55,7 @@ def show(request):
         print(y_test.shape) 
 
        #logreg_clf = LogisticRegression(solver='liblinear')
+
         logreg_clf =  eval("LogisticRegression("+parameterString[0:len(parameterString) -1]+")") 
 
 # Perform a 10-fold cross validation with scoring='roc_auc'
