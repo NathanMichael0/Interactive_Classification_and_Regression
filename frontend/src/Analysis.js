@@ -2,6 +2,9 @@ import { useState } from 'react';
 import logo from './logo.svg';
 //import './App.css';
 import axios from "axios";
+import { BarChart, Bar, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+
+
 
 
 
@@ -10,6 +13,13 @@ import axios from "axios";
 
 const baseUrl = "http://localhost:8000";
 const Analysis = () => {
+  const [dataF,setDataF] = useState([
+    {
+      name: 'Page A',
+      score: 4000,
+  
+    }
+  ]);
   const [csvFiles, updateCsvFiles] = useState({"file": "jkhjgvc"});
   const [csvJSON, updateCsvJSON] = useState([]);
   const [csvColumns, updateCsvColumns] = useState([]);
@@ -34,6 +44,7 @@ const Analysis = () => {
 const [paramString, setParamString] = useState("");
 const [classRegChoice, setClassRegChoice] = useState("");
 const [userChoice, setUserChoice] = useState(""); 
+const [meanCv, setMeanCv] = useState(""); 
 
   
   
@@ -95,7 +106,7 @@ const [userChoice, setUserChoice] = useState("");
       console.log(testSize)
       console.log(paramString);
 
-    const data =  await axios.post(`${baseUrl}/show`, {
+    const resp =  await axios.post(`${baseUrl}/show`, {
       newJsonCsv: csvJSON,
       ttestsize: testSize,
       tgtClass: targetClass,
@@ -105,7 +116,9 @@ const [userChoice, setUserChoice] = useState("");
     
   });
 
-  console.log(data.data)
+  setMeanCv(resp.data.meanCvScore)
+  setDataF(resp.data.featureImp)
+  console.log(resp.data)
   
   
   }
@@ -482,7 +495,9 @@ if(i != 0){
 
 <button  onClick ={ ()=> { handleClassification()}  } ><b>Done</b> </button>
 
-  <p>Mean CV score</p>
+  
+
+  <b>Mean CV Score :{meanCv} </b>
 <p>Feature importance graph</p>
 </div>
 
@@ -609,8 +624,11 @@ if(i != 0){
 
 
 })}
-  
-  <p>Mean CV score</p>
+  <button  onClick ={ ()=> { handleClassification()}  } ><b>Done</b> </button>
+ 
+<br></br>
+  <b>Mean CV Score :{meanCv} </b>
+  <br></br>
  <p>Feature importance graph</p>
 
         </div>
@@ -740,9 +758,31 @@ if(i != 0){
 
 })}
 
+<button  onClick ={ ()=> { handleClassification()}  } ><b>Done</b> </button>
+<b>Mean CV Score :{meanCv} </b>
+  <p>Feature importance </p>
 
-  <p>Mean CV score</p>
-  <p>Feature importance graph</p>
+  <BarChart
+          width={700}
+          height={300}
+          data={dataF}
+          margin={{
+            top: 20,
+            right: 30,
+            left: 20,
+            bottom: 5,
+          }}
+        >
+          <CartesianGrid strokeDasharray="3  3" />
+          <XAxis dataKey="name" />
+          <YAxis />
+          <Tooltip />
+          <Legend />
+          
+          
+          <Bar dataKey="score" fill="#ffc658" />
+
+        </BarChart>
 
 
 <p>
@@ -779,3 +819,4 @@ ROC Curves
 }
 
 export default Analysis;
+/**          */

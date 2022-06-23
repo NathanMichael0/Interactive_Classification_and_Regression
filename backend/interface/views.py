@@ -43,29 +43,39 @@ def show(request):
         X =  newCsv.drop(targetClass, axis=1)
         y = newCsv[targetClass]
 
-        print(X.shape)
-        print(y.shape)
-        print(X.head())
-        print(y.head())
+  
         X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=testSize)
 
-        print(X_train.shape)
-        print(y_train.shape)
-        print(X_test.shape)
-        print(y_test.shape) 
+ 
+
+        if (userChoice == "logreg"):
+            reg_clf =  eval("LogisticRegression("+parameterString[0:len(parameterString) -1]+")") 
+        elif (userChoice == "linsvc"):
+             reg_clf =  eval("LinearSVC("+parameterString[0:len(parameterString) -1]+")") 
+        elif (userChoice == "rand"):
+             reg_clf =  eval("RandomForestClassifier("+parameterString[0:len(parameterString) -1]+")") 
+
+
+  
 
        #logreg_clf = LogisticRegression(solver='liblinear')
 
-        logreg_clf =  eval("LogisticRegression("+parameterString[0:len(parameterString) -1]+")") 
+        
 
 # Perform a 10-fold cross validation with scoring='roc_auc'
 # Note: cross validation should be done on the whole X
-        logreg_cv_score = cross_val_score(logreg_clf, X,np.ravel(y), cv=10, scoring='roc_auc')
+        cv_score = cross_val_score(reg_clf, X,np.ravel(y), cv=10, scoring='roc_auc')
 
 
-        print("Mean CV Score - Logistic Regression: ", logreg_cv_score.mean())  
+        print("Mean CV Score ", cv_score.mean())  
+        reg_clf.fit(X_train, y_train)
+        featureImp = []
+        
+        for name, score in zip(newCsv, reg_clf.feature_importances_):
+            featureImp.append({"name":name,"score":score})
+            
 
-        return JsonResponse({"meanCvScore":0})
+        return JsonResponse({"meanCvScore":(cv_score.mean()), "featureImp": featureImp})
 
 
 
