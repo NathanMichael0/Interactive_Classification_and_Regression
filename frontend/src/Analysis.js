@@ -113,7 +113,7 @@ const [meanCv, setMeanCv] = useState("");
       console.log(testSize)
       console.log(paramString);
 
-    const resp =  await axios.post(`${baseUrl}/show`, {
+    const resp =  await axios.post(`${baseUrl}/clf`, {
       newJsonCsv: csvJSON,
       ttestsize: testSize,
       tgtClass: targetClass,
@@ -123,6 +123,8 @@ const [meanCv, setMeanCv] = useState("");
     
   });
 
+
+  
   setMeanCv(resp.data.meanCvScore)
   setDataF(resp.data.featureImp)
   setRocData(resp.data.roc)
@@ -132,6 +134,34 @@ const [meanCv, setMeanCv] = useState("");
   
   }
 
+  const handleRegression =  async ( e ) =>{
+
+
+    console.log(csvJSON);
+    console.log(targetClass)
+      console.log(testSize)
+      console.log(paramString);
+
+    const resp =  await axios.post(`${baseUrl}/reg`, {
+      newJsonCsv: csvJSON,
+      ttestsize: testSize,
+      tgtClass: targetClass,
+      parameters: paramString,
+      classReg: classRegChoice
+
+    
+  });
+
+
+  
+  setMeanCv(resp.data.meanCvScore)
+  setDataF(resp.data.featureImp)
+  setRocData(resp.data.roc)
+  setAuc(resp.data.auc)
+  console.log(resp.data)
+  
+  
+  }
   const handleButtonChange =    (e) =>{
     console.log(columnDrop)
     let csvJSONTemp = csvJSON.slice();
@@ -351,15 +381,31 @@ return(
   }
   else if (userChoice === "reg"){
 
-    return(
-    
+
+    if(classRegChoice === "" ){
+      return(
       <div> 
+          <div> 
         
-        <p> Regression</p>
+        <b> Regression</b>
       
       </div>
-     
-  )
+      
+      <button  onClick ={(e) =>  setClassRegChoice("linreg") }  > Linear Regression</button>
+    <button  onClick ={ (e) => setClassRegChoice("logreg") } > Logistic Regression</button>
+    <button  onClick ={ (e) => setClassRegChoice("ridgereg") } > Ridge Regressor</button>
+    
+    </div>
+
+      )
+
+
+    }
+    else if(classRegChoice === "linreg"){}
+    else if(classRegChoice === "logreg"){}
+    else {}
+
+  
 
   }
   else if (userChoice === "clf") {
@@ -503,7 +549,7 @@ if(i != 0){
 
 
 <button  onClick ={ ()=> { handleClassification()}  } ><b>Done</b> </button>
-
+<br></br>
   
 
   <b>Mean CV Score :{meanCv} </b>
@@ -869,6 +915,7 @@ if(i != 0){
 })}
 
 <button  onClick ={ ()=> { handleClassification()}  } ><b>Done</b> </button>
+<br></br>
 <b>Mean CV Score :{meanCv} </b>
   <p>Feature importance </p>
 

@@ -22,13 +22,28 @@ from sklearn.svm import SVC
 
 
     # Create your views here.  
-def emp(request):  
-        if request.method == "POST":  
-            print("posted")
-        else:  
-            print("")
-        return render(request,'index.html',{'form':"form"})  
-def show(request):  
+def reg(request):  
+        targetClass = json.loads(request.body)["tgtClass"]
+        newCsv = pd.DataFrame(json.loads(request.body)["newJsonCsv"])
+        testSize = json.loads(request.body)["ttestsize"]
+        parameterString =json.loads(request.body)["parameters"]
+        userChoice = json.loads(request.body)["classReg"]
+        featureImp = []
+        rocArr = []
+
+        print(newCsv.head())
+
+        X =  newCsv.drop(targetClass, axis=1)
+        y = newCsv[targetClass]
+
+  
+        X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=testSize)
+
+
+
+        return JsonResponse({"meanCvScore":"", "featureImp": featureImp,})
+
+def clf(request):  
         #if request.method == "POST":  
         #print("showing req",json.loads(request.body))
 
