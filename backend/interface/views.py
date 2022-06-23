@@ -37,6 +37,8 @@ def show(request):
         testSize = json.loads(request.body)["ttestsize"]
         parameterString =json.loads(request.body)["parameters"]
         userChoice = json.loads(request.body)["classReg"]
+        featureImp = []
+        rocArr = []
 
         print(newCsv.head())
 
@@ -48,12 +50,73 @@ def show(request):
 
  
 
+
+
         if (userChoice == "logreg"):
             reg_clf =  eval("LogisticRegression("+parameterString[0:len(parameterString) -1]+")") 
+            reg_clf.fit(X_train, y_train)
+            i=0
+            for name in (reg_clf.feature_names_in_):
+                featureImp.append({"name":name,"coef":(reg_clf.coef_)[0][i]})
+                i+=1
+
+            logreg_probs = reg_clf.predict_proba(X_test)
+            logreg_preds = logreg_probs[:,1]
+            logreg_fpr, logreg_tpr, logreg_threshold = metrics.roc_curve(y_test, logreg_preds)
+            auc = metrics.auc(logreg_fpr, logreg_tpr)
+
+            i=0          
+            for j in (list(logreg_tpr)):
+                rocArr.append({"tpr":j,"fpr":(list(logreg_fpr))[i]})
+                i+=1
+
+
         elif (userChoice == "linsvc"):
-             reg_clf =  eval("LinearSVC("+parameterString[0:len(parameterString) -1]+")") 
+             reg_clf =  eval("LinearSVC("+parameterString[0:len(parameterString) -1]+")")  
+             reg_clf.fit(X_train, y_train)  
+             i=0          
+             for name in (reg_clf.feature_names_in_):
+                featureImp.append({"name":name,"coef":(reg_clf.coef_)[0][i]})
+                i+=1
+
+             svm_probs = reg_clf.decision_function(X_test)
+             svm_preds = svm_probs
+             svm_fpr, svm_tpr, svm_threshold = metrics.roc_curve(y_test, svm_preds)
+             auc = metrics.auc(svm_fpr, svm_tpr)   
+
+
+             i=0          
+             for j in (list(svm_tpr)):
+                rocArr.append({"tpr":j,"fpr":(list(svm_fpr))[i]})
+                i+=1   
+
+
+
         elif (userChoice == "rand"):
              reg_clf =  eval("RandomForestClassifier("+parameterString[0:len(parameterString) -1]+")") 
+             reg_clf.fit(X_train, y_train)
+             
+        
+             for name, score in zip(newCsv, reg_clf.feature_importances_):
+                featureImp.append({"name":name,"score":score})
+             rf_probs = reg_clf.predict_proba(X_test)
+             rf_preds = rf_probs[:,1]
+             rf_fpr, rf_tpr, rf_threshold = metrics.roc_curve(y_test, rf_preds)
+             auc = metrics.auc(rf_fpr, rf_tpr)  
+              
+
+
+             i=0          
+             for j in (list(rf_tpr)):
+                rocArr.append({"tpr":j,"fpr":(list(rf_fpr))[i]})
+                i+=1
+
+
+
+
+
+             
+             #rocArr= [{"tpr": list(rf_tpr), "fpr":list(rf_fpr), "rocauc":rf_roc_auc}]
 
 
   
@@ -68,14 +131,10 @@ def show(request):
 
 
         print("Mean CV Score ", cv_score.mean())  
-        reg_clf.fit(X_train, y_train)
-        featureImp = []
-        
-        for name, score in zip(newCsv, reg_clf.feature_importances_):
-            featureImp.append({"name":name,"score":score})
+       
             
 
-        return JsonResponse({"meanCvScore":(cv_score.mean()), "featureImp": featureImp})
+        return JsonResponse({"meanCvScore":(cv_score.mean()), "featureImp": featureImp, "roc": rocArr, "auc":auc})
 
 
 

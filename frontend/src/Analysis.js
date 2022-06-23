@@ -1,8 +1,7 @@
 import { useState } from 'react';
 import logo from './logo.svg';
-//import './App.css';
 import axios from "axios";
-import { BarChart, Bar, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import { LineChart, Line, BarChart, Bar, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
 
 
@@ -20,12 +19,20 @@ const Analysis = () => {
   
     }
   ]);
+  const [rocData,setRocData] = useState([
+    {
+      tpr: 9,
+      fpr: 9,
+  
+    }
+  ]);
   const [csvFiles, updateCsvFiles] = useState({"file": "jkhjgvc"});
   const [csvJSON, updateCsvJSON] = useState([]);
   const [csvColumns, updateCsvColumns] = useState([]);
   let columnDrop =[];
   const [targetClass, setTargetClass] = useState("");
   const [testSize, setTestSize] = useState(0);
+  const [auc, setAuc] = useState(0);
   const [sciLearnParams, setSciLearnParams] = useState({});
   const linRegParam = [["penalty","l1", "l2","elasticnet", "none"],["dual", "bool"],["tol", "flt"],["C", "flt"],["fit_intercept", "bool"], ["intercept_scaling","flt"],["multi_class", "auto", "ovr", "multinomial"],["solver","newton-cg", "lbfgs", "liblinear", "sag", "saga"],["random_state", "int"],["max_iter", "int"],["verbose", "int"] ,["n_jobs", "int"], ["l1_ratio","flt"]
 
@@ -118,6 +125,8 @@ const [meanCv, setMeanCv] = useState("");
 
   setMeanCv(resp.data.meanCvScore)
   setDataF(resp.data.featureImp)
+  setRocData(resp.data.roc)
+  setAuc(resp.data.auc)
   console.log(resp.data)
   
   
@@ -499,6 +508,57 @@ if(i != 0){
 
   <b>Mean CV Score :{meanCv} </b>
 <p>Feature importance graph</p>
+
+<BarChart
+          width={700}
+          height={300}
+          data={dataF}
+          margin={{
+            top: 20,
+            right: 30,
+            left: 20,
+            bottom: 5,
+          }}
+        >
+          <CartesianGrid strokeDasharray="3  3" />
+          <XAxis dataKey="name" />
+          <YAxis />
+          <Tooltip />
+          <Legend />
+          
+          
+          <Bar dataKey="coef" fill="#ffc658" />
+
+        </BarChart>
+
+        <p>
+  <br></br>
+ROC Curves
+<LineChart
+          width={300}
+          height={300}
+          data={rocData}
+          margin={{
+            top: 5,
+            right: 30,
+            left: 20,
+            bottom: 5,
+          }}
+        >
+          <CartesianGrid strokeDasharray="3 3" />
+          <XAxis  />
+          <YAxis   />
+          <Tooltip />
+          <Legend />
+          <Line type="monotone" dataKey="tpr" stroke="#8884d8" />
+        </LineChart>
+
+
+</p>
+          
+<br></br>
+<b>AUC: </b> <p>{auc}</p>
+
 </div>
 
       )
@@ -631,6 +691,56 @@ if(i != 0){
   <br></br>
  <p>Feature importance graph</p>
 
+ <BarChart
+          width={700}
+          height={300}
+          data={dataF}
+          margin={{
+            top: 20,
+            right: 30,
+            left: 20,
+            bottom: 5,
+          }}
+        >
+          <CartesianGrid strokeDasharray="3  3" />
+          <XAxis dataKey="name" />
+          <YAxis />
+          <Tooltip />
+          <Legend />
+          
+          
+          <Bar dataKey="coef" fill="#ffc658" />
+
+        </BarChart>
+
+
+        <p>
+  <br></br>
+ROC Curves
+<LineChart
+          width={500}
+          height={300}
+          data={rocData}
+          margin={{
+            top: 5,
+            right: 30,
+            left: 20,
+            bottom: 5,
+          }}
+        >
+          <CartesianGrid strokeDasharray="3 3" />
+          <XAxis  />
+          <YAxis   />
+          <Tooltip />
+          <Legend />
+          <Line type="monotone" dataKey="tpr" stroke="#8884d8" />
+        </LineChart>
+
+
+</p>
+          
+<br></br>
+<b>AUC: </b> <p>{auc}</p>
         </div>
       )
 
@@ -786,11 +896,32 @@ if(i != 0){
 
 
 <p>
+  <br></br>
 ROC Curves
+<LineChart
+          width={500}
+          height={300}
+          data={rocData}
+          margin={{
+            top: 5,
+            right: 30,
+            left: 20,
+            bottom: 5,
+          }}
+        >
+          <CartesianGrid strokeDasharray="3 3" />
+          <XAxis  />
+          <YAxis   />
+          <Tooltip />
+          <Legend />
+          <Line type="monotone" dataKey="tpr" stroke="#8884d8" />
+        </LineChart>
 
 
 </p>
           
+<br></br>
+<b>AUC: </b> <p>{auc}</p>
         </div>
       )
 
