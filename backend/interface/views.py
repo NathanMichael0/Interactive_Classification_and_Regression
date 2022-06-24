@@ -38,7 +38,23 @@ def reg(request):
 
   
         X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=testSize)
+        if (userChoice == "linreg"):
+            reg_clf =  eval("LinearRegression("+parameterString[0:len(parameterString) -1]+")") 
+            
 
+
+        elif (userChoice == "logreg"):
+             reg_clf =  eval("LogisticRegression("+parameterString[0:len(parameterString) -1]+")")  
+            
+
+
+
+        elif (userChoice == "ridgereg"):
+             reg_clf =  eval("Ridge("+parameterString[0:len(parameterString) -1]+")") 
+            
+        
+ 
+        
 
 
         return JsonResponse({"meanCvScore":"", "featureImp": featureImp,})
@@ -62,9 +78,6 @@ def clf(request):
 
   
         X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=testSize)
-
- 
-
 
 
         if (userChoice == "logreg"):

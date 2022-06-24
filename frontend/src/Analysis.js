@@ -48,6 +48,11 @@ const Analysis = () => {
   ,["warm_start", "bool"], ["ccp_alpha", "flt"],["max_samples", "flt"]
 
 ];
+const regLinParam = [["fit_intercept", "bool"],["normalize", "bool"],["copy_X", "bool"],["n_jobs", "int"], ["positive", "bool"]
+];
+const ridgeParam = [["alpha", "flt"],  ["fit_intercept", "bool"],["normalize", "bool"],["copy_X", "bool"],["max_iter", "int"],["tol", "flt"],["solver","auto", "lbfgs", "svd", "cholesky", "saga","lsqr","sparse_cg","sag"], ["positive", "bool"],["random_state", "int"]
+];
+
 const [paramString, setParamString] = useState("");
 const [classRegChoice, setClassRegChoice] = useState("");
 const [userChoice, setUserChoice] = useState(""); 
@@ -401,9 +406,391 @@ return(
 
 
     }
-    else if(classRegChoice === "linreg"){}
-    else if(classRegChoice === "logreg"){}
-    else {}
+    else if(classRegChoice === "linreg"){
+      return(
+<div>
+
+<p>  choose parameters for Linear Regression * Optional</p>
+
+{regLinParam.map((param,i) => {
+
+if(param[1] === "int" ){
+
+  return(
+
+
+      <div>
+
+    <label> {param[0]} <input onChange={(e) => handleParamChange(e,param[0])}></input> </label> 
+    <br></br>
+
+      </div>
+
+   
+    
+    )
+
+
+}
+else  if(param[1] === "flt" ){
+  return(
+
+
+
+
+    <div>
+
+<label> {param[0]} <input onChange={(e) => handleParamChange(e,param[0])}></input> </label> 
+    <br></br>
+
+      </div>
+    
+    
+    
+    
+    )
+
+
+
+}
+else if(param[1] === "bool" ){
+
+  return(
+
+
+
+
+    <div>
+
+    <label> {param[0]}</label> <input type="checkbox"  onChange={(e) =>{ 
+      if(e.target.value === "on"){e.target.value = 1}
+      else{e.target.value = 0;}
+     handleParamChange(e,param[0])}} ></input>
+    <br></br>
+
+      </div>
+    
+    
+    
+    
+    )
+
+
+}
+else{
+
+return(
+
+
+
+
+  <div>
+
+  <b> {param[0]}</b> 
+<br></br>
+  {param.map((p,i) => {
+
+if(i != 0){
+
+  return(
+    <div>
+      <label> {p}</label><input type="radio" name={param[0]} value={"'"+p+"'"} onChange={(e) => handleParamChange(e,param[0])} ></input>
+    
+    </div>
+  
+  
+    )
+
+}
+
+  })}
+
+
+  
+<br></br>
+    </div>
+    
+    
+    
+    
+    )
+
+}
+
+
+
+
+
+
+
+})}
+<button  onClick ={ ()=> { handleRegression()}  } ><b>Done</b> </button>
+
+<br></br>
+
+<b> {"$R^2$"} score: </b>
+</div>
+      )
+    
+      }
+    else if(classRegChoice === "logreg"){
+
+      return(
+        <div>
+        
+        <p>  choose parameters for Logistic Regression * Optional</p>
+        
+        {linRegParam.map((param,i) => {
+        
+        if(param[1] === "int" ){
+        
+          return(
+        
+        
+              <div>
+        
+            <label> {param[0]} <input onChange={(e) => handleParamChange(e,param[0])}></input> </label> 
+            <br></br>
+        
+              </div>
+        
+           
+            
+            )
+        
+        
+        }
+        else  if(param[1] === "flt" ){
+          return(
+        
+        
+        
+        
+            <div>
+        
+        <label> {param[0]} <input onChange={(e) => handleParamChange(e,param[0])}></input> </label> 
+            <br></br>
+        
+              </div>
+            
+            
+            
+            
+            )
+        
+        
+        
+        }
+        else if(param[1] === "bool" ){
+        
+          return(
+        
+        
+        
+        
+            <div>
+        
+            <label> {param[0]}</label> <input type="checkbox"  onChange={(e) =>{ 
+              if(e.target.value === "on"){e.target.value = 1}
+              else{e.target.value = 0;}
+             handleParamChange(e,param[0])}} ></input>
+            <br></br>
+        
+              </div>
+            
+            
+            
+            
+            )
+        
+        
+        }
+        else{
+        
+        return(
+        
+        
+        
+        
+          <div>
+        
+          <b> {param[0]}</b> 
+        <br></br>
+          {param.map((p,i) => {
+        
+        if(i != 0){
+        
+          return(
+            <div>
+              <label> {p}</label><input type="radio" name={param[0]} value={"'"+p+"'"} onChange={(e) => handleParamChange(e,param[0])} ></input>
+            
+            </div>
+          
+          
+            )
+        
+        }
+        
+          })}
+        
+        
+          
+        <br></br>
+            </div>
+            
+            
+            
+            
+            )
+        
+        }
+        
+        
+        
+        
+        
+        
+        
+        })}
+
+<button  onClick ={ ()=> { handleRegression()}  } ><b>Done</b> </button>
+<br></br>
+
+<b> {"$R^2$"} score: </b>
+
+        </div>
+              )
+            
+
+    }
+    else {
+      return(
+        <div>
+        
+        <p>  choose parameters for Ridge Regression * Optional</p>
+        
+        {ridgeParam.map((param,i) => {
+        
+        if(param[1] === "int" ){
+        
+          return(
+        
+        
+              <div>
+        
+            <label> {param[0]} <input onChange={(e) => handleParamChange(e,param[0])}></input> </label> 
+            <br></br>
+        
+              </div>
+        
+           
+            
+            )
+        
+        
+        }
+        else  if(param[1] === "flt" ){
+          return(
+        
+        
+        
+        
+            <div>
+        
+        <label> {param[0]} <input onChange={(e) => handleParamChange(e,param[0])}></input> </label> 
+            <br></br>
+        
+              </div>
+            
+            
+            
+            
+            )
+        
+        
+        
+        }
+        else if(param[1] === "bool" ){
+        
+          return(
+        
+        
+        
+        
+            <div>
+        
+            <label> {param[0]}</label> <input type="checkbox"  onChange={(e) =>{ 
+              if(e.target.value === "on"){e.target.value = 1}
+              else{e.target.value = 0;}
+             handleParamChange(e,param[0])}} ></input>
+            <br></br>
+        
+              </div>
+            
+            
+            
+            
+            )
+        
+        
+        }
+        else{
+        
+        return(
+        
+        
+        
+        
+          <div>
+        
+          <b> {param[0]}</b> 
+        <br></br>
+          {param.map((p,i) => {
+        
+        if(i != 0){
+        
+          return(
+            <div>
+              <label> {p}</label><input type="radio" name={param[0]} value={"'"+p+"'"} onChange={(e) => handleParamChange(e,param[0])} ></input>
+            
+            </div>
+          
+          
+            )
+        
+        }
+        
+          })}
+        
+        
+          
+        <br></br>
+            </div>
+            
+            
+            
+            
+            )
+        
+        }
+        
+        
+        
+        
+        
+        
+        
+        })}
+        <button  onClick ={ ()=> { handleRegression()}  } ><b>Done</b> </button>
+
+
+        <b> {"$R^2$"} score: </b>
+
+        </div>
+              )
+            
+
+    }
 
   
 
