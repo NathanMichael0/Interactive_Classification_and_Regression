@@ -18,6 +18,10 @@ import matplotlib.pyplot as plt
 from sklearn import metrics
 from nltk.classify.scikitlearn import SklearnClassifier
 from sklearn.svm import SVC
+from sklearn.linear_model import Ridge
+from sklearn.linear_model import LinearRegression
+
+
 
 
 
@@ -40,24 +44,46 @@ def reg(request):
         X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=testSize)
         if (userChoice == "linreg"):
             reg_clf =  eval("LinearRegression("+parameterString[0:len(parameterString) -1]+")") 
+            reg_clf.fit(X_train,y_train)
+
+            rscore = reg_clf.score(X_train, y_train)
+
+            i=0          
+            for name in (reg_clf.feature_names_in_):
+                featureImp.append({"name":name,"coef":(reg_clf.coef_)[i]})
+                i+=1
             
 
 
         elif (userChoice == "logreg"):
              reg_clf =  eval("LogisticRegression("+parameterString[0:len(parameterString) -1]+")")  
             
+             reg_clf.fit(X_train,y_train)
 
+             rscore = reg_clf.score(X_train, y_train)
+
+
+             i=0          
+             for name in (reg_clf.feature_names_in_):
+                featureImp.append({"name":name,"coef":(reg_clf.coef_[0]) [i]})
+                i+=1
 
 
         elif (userChoice == "ridgereg"):
              reg_clf =  eval("Ridge("+parameterString[0:len(parameterString) -1]+")") 
             
-        
+             reg_clf.fit(X_train,y_train)
+
+             rscore = reg_clf.score(X_train, y_train)
+             i=0          
+             for name in (reg_clf.feature_names_in_):
+                featureImp.append({"name":name,"coef":(reg_clf.coef_)[i]})
+                i+=1
  
         
 
 
-        return JsonResponse({"meanCvScore":"", "featureImp": featureImp,})
+        return JsonResponse({"rscore":rscore,  "featureImp": featureImp,})
 
 def clf(request):  
         #if request.method == "POST":  

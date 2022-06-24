@@ -57,6 +57,7 @@ const [paramString, setParamString] = useState("");
 const [classRegChoice, setClassRegChoice] = useState("");
 const [userChoice, setUserChoice] = useState(""); 
 const [meanCv, setMeanCv] = useState(""); 
+const [rScore, setRScore] = useState(""); 
 
   
   
@@ -159,10 +160,9 @@ const [meanCv, setMeanCv] = useState("");
 
 
   
-  setMeanCv(resp.data.meanCvScore)
-  setDataF(resp.data.featureImp)
-  setRocData(resp.data.roc)
-  setAuc(resp.data.auc)
+setRScore(resp.data.rscore)
+setDataF(resp.data.featureImp)
+ 
   console.log(resp.data)
   
   
@@ -528,7 +528,36 @@ if(i != 0){
 
 <br></br>
 
-<b> {"$R^2$"} score: </b>
+<b> {"$R^2$"} score: </b> <p>{rScore}</p>
+
+
+<p>Feature importance graph</p>
+
+<BarChart
+          width={700}
+          height={300}
+          data={dataF}
+          margin={{
+            top: 20,
+            right: 30,
+            left: 20,
+            bottom: 5,
+          }}
+        >
+          <CartesianGrid strokeDasharray="3  3" />
+          <XAxis dataKey="name" />
+          <YAxis />
+          <Tooltip />
+          <Legend />
+          
+          
+          <Bar dataKey="coef" fill="#ffc658" />
+
+        </BarChart>
+
+        
+  <br></br>
+
 </div>
       )
     
@@ -656,8 +685,33 @@ if(i != 0){
 <button  onClick ={ ()=> { handleRegression()}  } ><b>Done</b> </button>
 <br></br>
 
-<b> {"$R^2$"} score: </b>
+<b> {"$R^2$"} score: </b> <p>{rScore}</p>
+<p>Feature importance graph</p>
 
+<BarChart
+          width={700}
+          height={300}
+          data={dataF}
+          margin={{
+            top: 20,
+            right: 30,
+            left: 20,
+            bottom: 5,
+          }}
+        >
+          <CartesianGrid strokeDasharray="3  3" />
+          <XAxis dataKey="name" />
+          <YAxis />
+          <Tooltip />
+          <Legend />
+          
+          
+          <Bar dataKey="coef" fill="#ffc658" />
+
+        </BarChart>
+
+        
+  <br></br>
         </div>
               )
             
@@ -783,8 +837,35 @@ if(i != 0){
         })}
         <button  onClick ={ ()=> { handleRegression()}  } ><b>Done</b> </button>
 
+        <br></br>
+        <b> {"$R^2$"} score: </b>  <p>{rScore}</p>
 
-        <b> {"$R^2$"} score: </b>
+        <p>Feature importance graph</p>
+
+<BarChart
+          width={700}
+          height={300}
+          data={dataF}
+          margin={{
+            top: 20,
+            right: 30,
+            left: 20,
+            bottom: 5,
+          }}
+        >
+          <CartesianGrid strokeDasharray="3  3" />
+          <XAxis dataKey="name" />
+          <YAxis />
+          <Tooltip />
+          <Legend />
+          
+          
+          <Bar dataKey="coef" fill="#ffc658" />
+
+        </BarChart>
+
+        
+  <br></br>
 
         </div>
               )
