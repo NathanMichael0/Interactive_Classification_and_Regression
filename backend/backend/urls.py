@@ -21,8 +21,8 @@ from django.urls import path
 from interface import views  
 urlpatterns = [  
     path('admin/', admin.site.urls),  
-    path('emp', views.emp),  
-    path('show',views.show),  
+    path('reg', views.reg),  
+    path('clf',views.clf),  
     path('edit', views.edit),  
     path('update/<int:id>', views.update),  
     path('delete/<int:id>', views.destroy),  

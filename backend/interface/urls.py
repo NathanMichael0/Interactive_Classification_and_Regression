@@ -3,8 +3,8 @@ from . import views
 
 urlpatterns = [
     url('', views.edit, name = 'index'),
-    url('emp', views.emp, name='interface'),
-    url('show/', views.show, name = 'upload.csv'),
+    url('reg', views.reg, name='interface'),
+    url('clf/', views.clf, name = 'upload.csv'),
     
 
     
