@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useState,useEffect } from 'react';
+import Uploads,{ JSON_}  from './Uploads';
 import logo from './logo.svg';
 import axios from "axios";
 import { LineChart, Line, BarChart, Bar, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
@@ -9,9 +10,23 @@ import { LineChart, Line, BarChart, Bar, Cell, XAxis, YAxis, CartesianGrid, Tool
 
 
 
+let csvImp = JSON_;
+let colImp = Object.keys(JSON_[0]);
+
 
 const baseUrl = "http://localhost:8000";
 const Analysis = () => {
+
+useEffect(()=>{
+
+setTimeout(() => {
+  
+}, 5000);
+
+
+
+});
+
   const [dataF,setDataF] = useState([
     {
       name: 'Page A',
@@ -27,13 +42,14 @@ const Analysis = () => {
     }
   ]);
   const [csvFiles, updateCsvFiles] = useState({"file": "jkhjgvc"});
-  const [csvJSON, updateCsvJSON] = useState([]);
-  const [csvColumns, updateCsvColumns] = useState([]);
+  const [csvJSON, updateCsvJSON] = useState(csvImp);
+  const [csvColumns, updateCsvColumns] = useState(colImp);
   let columnDrop =[];
   const [targetClass, setTargetClass] = useState("");
   const [testSize, setTestSize] = useState(0);
   const [auc, setAuc] = useState(0);
   const [sciLearnParams, setSciLearnParams] = useState({});
+  
   const linRegParam = [["penalty","l1", "l2","elasticnet", "none"],["dual", "bool"],["tol", "flt"],["C", "flt"],["fit_intercept", "bool"], ["intercept_scaling","flt"],["multi_class", "auto", "ovr", "multinomial"],["solver","newton-cg", "lbfgs", "liblinear", "sag", "saga"],["random_state", "int"],["max_iter", "int"],["verbose", "int"] ,["n_jobs", "int"], ["l1_ratio","flt"]
 
   ,["warm_start", "bool"]
@@ -53,11 +69,15 @@ const regLinParam = [["fit_intercept", "bool"],["normalize", "bool"],["copy_X", 
 const ridgeParam = [["alpha", "flt"],  ["fit_intercept", "bool"],["normalize", "bool"],["copy_X", "bool"],["max_iter", "int"],["tol", "flt"],["solver","auto", "lbfgs", "svd", "cholesky", "saga","lsqr","sparse_cg","sag"], ["positive", "bool"],["random_state", "int"]
 ];
 
+
 const [paramString, setParamString] = useState("");
 const [classRegChoice, setClassRegChoice] = useState("");
 const [userChoice, setUserChoice] = useState(""); 
 const [meanCv, setMeanCv] = useState(""); 
 const [rScore, setRScore] = useState(""); 
+ 
+
+
 
   
   
@@ -76,6 +96,7 @@ const [rScore, setRScore] = useState("");
   
   
   }
+
 
   const handleParamChange = (e,par)=>
   {
@@ -242,23 +263,13 @@ updateCsvJSON(csvJSONTemp);
    
 
 <div>
-<form  method="POST"  enctype="multipart/form-data"> 
-   <div >
-       <label>File:
-         <input  type="file" name="csv_file" id="csv_file" required="True" class="form-control"  onChange={(e) => handleFile(e)} ></input>
-          </label>
-       <div >
-       </div>                    
-   </div>
-   <div >                    
-       <div >
-            <button onClick={(e) => handleUpload(e)}>Upload </button>
-       </div> 
-   </div>
 
-{
+  {
   //<p> {JSON.stringify(row, null, 2)}</p>
-csvJSON.map((row,i)=> {
+csvImp.map((row,i)=> {
+  console.log(
+    "innnnn"
+  )
 if(i < 10 ){
  
 
@@ -278,15 +289,15 @@ return(<div>
 })}
 
 
-    </form>
-
 
     <h1> Clean data</h1>
     <p>Pick a column to drop</p>
+
+
 {
 
 
-csvColumns.map((col, j) => {
+colImp.map((col, j) => {
 
 
 return(
@@ -1465,4 +1476,41 @@ ROC Curves
 }
 
 export default Analysis;
-/**          */
+/**      <form  method="POST"  enctype="multipart/form-data"> 
+   <div >
+       <label>File:
+         <input  type="file" name="csv_file" id="csv_file" required="True" class="form-control"  onChange={(e) => handleFile(e)} ></input>
+          </label>
+       <div >
+       </div>                    
+   </div>
+   <div >                    
+       <div >
+            <button onClick={(e) => handleUpload(e)}>Upload </button>
+       </div> 
+   </div>
+
+{
+  //<p> {JSON.stringify(row, null, 2)}</p>
+(JSON_).map((row,i)=> {
+if(i < 10 ){
+ 
+
+return(<div>
+
+
+<p> {JSON.stringify(row, null, 2)}</p>
+
+</div>)
+
+}
+
+
+
+
+
+})}
+
+
+    </form>    */
+
