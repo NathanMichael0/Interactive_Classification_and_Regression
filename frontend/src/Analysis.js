@@ -264,60 +264,7 @@ updateCsvJSON(csvJSONTemp);
 
 <div>
 
-  {
-  //<p> {JSON.stringify(row, null, 2)}</p>
-csvImp.map((row,i)=> {
-  console.log(
-    "innnnn"
-  )
-if(i < 10 ){
  
-
-return(<div>
-
-
-<p> {JSON.stringify(row, null, 2)}</p>
-
-</div>)
-
-}
-
-
-
-
-
-})}
-
-
-
-    <h1> Clean data</h1>
-    <p>Pick a column to drop</p>
-
-
-{
-
-
-colImp.map((col, j) => {
-
-
-return(
-//onClick ={ )=>columnDrop.push(col) }
-<button id = {col}  onClick ={ ()=> {columnDrop.push(col)}  }
->
-{col}
-  
-</button>
-
-
-
-)
-
-
-
-
-}
-)
-}
 
 <br></br>
 <br></br>

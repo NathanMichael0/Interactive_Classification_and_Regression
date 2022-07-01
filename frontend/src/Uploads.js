@@ -68,7 +68,7 @@ function Uploads() {
          }
 
          
-         navigate("/Analysis")
+         navigate("/Clean")
      
        }
   

@@ -1,31 +1,88 @@
 
 import { useState } from 'react';
-import logo from './logo.svg';
-import axios from "axios";
+
 import {useNavigate} from "react-router-dom"
+import { JSON_}  from './Uploads';
 
 const baseUrl = "http://localhost:8000";
 
-export var JSON_= [{"HEKKO": "gg"}];
+let csvImp = JSON_;
+let colImp = Object.keys(JSON_[0]);
 
 
 function Clean() {
     const navigate = useNavigate();
     let columnDrop =[];
-    const [csvFiles, updateCsvFiles] = useState({"file": "jkhjgvc"});
     const [csvJSON, updateCsvJSON] = useState([""]);
     const [csvColumns, updateCsvColumns] = useState([""]);
-    JSON_ = csvJSON;
+    //JSON_ = csvJSON;
 
 
- 
+    const handleButtonChange =    (e) =>{
+      console.log(columnDrop)
+      let csvJSONTemp = csvJSON.slice();
+      let csvColumnsTemp = csvColumns.slice()
+    for (let m = 0; m< columnDrop.length; m++)
+    {
+      delete csvColumnsTemp[csvColumns.indexOf(columnDrop[m])];
+      for (let n = 0; n< csvJSONTemp.length; n++)
+      {
+        
+        delete (csvJSONTemp[n])[columnDrop[m]];
+      
+    
+    
+    
+      }
+    
+  
+  
+  
+    }
+    columnDrop =[];
+  updateCsvColumns(csvColumnsTemp);
+  updateCsvJSON(csvJSONTemp);
+
+  navigate("/Analysis");
+    }
+  
   
 
 
 
   return (
+
+
+
+    
    
 <div>
+
+
+
+{
+  //<p> {JSON.stringify(row, null, 2)}</p>
+csvImp.map((row,i)=> {
+  console.log(
+    "innnnn"
+  )
+if(i < 10 ){
+ 
+
+return(<div>
+
+
+<p> {JSON.stringify(row, null, 2)}</p>
+
+</div>)
+
+}
+
+
+
+
+
+})}
 <h1> Clean data</h1>
     <p>Pick a column to drop</p>
 
