@@ -1,15 +1,26 @@
 import logo from './logo.svg';
 import './App.css';
-import Analysis  from './Analysis';
+import Analysis  from './Analysis.js';
+import Uploads  from './Uploads.js';
+import Clean from './Clean.js';
+
 import {Route,Routes} from 'react-router-dom';
-import ReactDOM from 'react-dom/client';
 
 
 function App() {
   return (
    
 
-  <Analysis></Analysis>
+
+    <Routes>
+    <Route path='/' element={<Uploads />} />
+    
+     <Route path='/Analysis' element={<Analysis />} />
+     <Route path='/Clean' element={<Clean />} />
+    
+  </Routes>
+
+  
   );
 
 
