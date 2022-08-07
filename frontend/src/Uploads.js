@@ -6,7 +6,7 @@ import {useNavigate} from "react-router-dom"
 
 const baseUrl = "http://localhost:8000";
 
-export var JSON_= [{"HEKKO": "gg"}];
+export let JSON_= [{"HEKKO": "gg"}];
 
 
 function Uploads() {
@@ -15,7 +15,7 @@ function Uploads() {
     const [csvFiles, updateCsvFiles] = useState({"file": "jkhjgvc"});
     const [csvJSON, updateCsvJSON] = useState([""]);
     const [csvColumns, updateCsvColumns] = useState([""]);
-    JSON_ = csvJSON;
+
 
 
     const handleFile = (e) =>{
@@ -51,24 +51,30 @@ function Uploads() {
            const data = await axios.post(`${baseUrl}/edit`, 
            csvFiles['files'],config
            );
+    
+        updateCsvJSON(data.data.csvdata);
      
-           updateCsvJSON(data.data.csvdata);
      
            
                let keysJSON = Object.keys(csvJSON[0]);
                updateCsvColumns(keysJSON);
 
-               
-      
+               JSON_ = (data.data.csvdata).slice();
+
+               console.log(JSON_) 
+  
+               navigate("/Clean")
          
          } catch (err) {
      
            console.log(err);
 
          }
+         
+       
+       
 
          
-         navigate("/Clean")
      
        }
   

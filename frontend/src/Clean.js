@@ -6,19 +6,19 @@ import { JSON_}  from './Uploads';
 
 const baseUrl = "http://localhost:8000";
 
-let csvImp = JSON_;
-let colImp = Object.keys(JSON_[0]);
+export var JSON_Clean= [{"HHPP":0}];
+
+
 
 
 function Clean() {
     const navigate = useNavigate();
     let columnDrop =[];
-    const [csvJSON, updateCsvJSON] = useState([""]);
-    const [csvColumns, updateCsvColumns] = useState([""]);
-    //JSON_ = csvJSON;
+    const [csvJSON, updateCsvJSON] = useState(JSON_);
+    const [csvColumns, updateCsvColumns] = useState(Object.keys(JSON_[0]));
 
 
-    const handleButtonChange =    (e) =>{
+    const handleButtonChange =   async (e) =>{
       console.log(columnDrop)
       let csvJSONTemp = csvJSON.slice();
       let csvColumnsTemp = csvColumns.slice()
@@ -43,7 +43,13 @@ function Clean() {
   updateCsvColumns(csvColumnsTemp);
   updateCsvJSON(csvJSONTemp);
 
+
+  JSON_Clean =  csvJSON;
+console.log(JSON_Clean);
   navigate("/Analysis");
+  
+  
+
     }
   
   
@@ -62,7 +68,7 @@ function Clean() {
 
 {
   //<p> {JSON.stringify(row, null, 2)}</p>
-csvImp.map((row,i)=> {
+csvJSON.map((row,i)=> {
   console.log(
     "innnnn"
   )
@@ -90,7 +96,7 @@ return(<div>
 {
 
 
-colImp.map((col, j) => {
+(Object.keys(JSON_[0])).map((col, j) => {
 
 
 return(
@@ -114,7 +120,7 @@ return(
 
 <br></br>
 <br></br>
-<button  onClick ={ ()=> { handleButtonChange()}  } > Done</button>
+<button  onClick ={ ()=> {  handleButtonChange()}  } > Done</button>
    
     
     
@@ -128,3 +134,4 @@ return(
 
 
 export default Clean;
+export let JSONC = JSON_Clean;

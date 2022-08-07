@@ -2,6 +2,8 @@ import { useState,useEffect } from 'react';
 import Uploads,{ JSON_}  from './Uploads';
 import logo from './logo.svg';
 import axios from "axios";
+import { JSON_Clean}  from './Clean';
+
 import { LineChart, Line, BarChart, Bar, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
 
@@ -10,8 +12,8 @@ import { LineChart, Line, BarChart, Bar, Cell, XAxis, YAxis, CartesianGrid, Tool
 
 
 
-let csvImp = JSON_;
-let colImp = Object.keys(JSON_[0]);
+let csvImp = JSON_Clean.slice();
+let colImp = Object.keys(JSON_Clean[0]);
 
 
 const baseUrl = "http://localhost:8000";
@@ -42,8 +44,8 @@ setTimeout(() => {
     }
   ]);
   const [csvFiles, updateCsvFiles] = useState({"file": "jkhjgvc"});
-  const [csvJSON, updateCsvJSON] = useState(csvImp);
-  const [csvColumns, updateCsvColumns] = useState(colImp);
+  const [csvJSON, updateCsvJSON] = useState(JSON_Clean);
+  const [csvColumns, updateCsvColumns] = useState(Object.keys(JSON_Clean[0]));
   let columnDrop =[];
   const [targetClass, setTargetClass] = useState("");
   const [testSize, setTestSize] = useState(0);
@@ -266,17 +268,15 @@ updateCsvJSON(csvJSONTemp);
 
  
 
-<br></br>
-<br></br>
-<button  onClick ={ ()=> { handleButtonChange()}  } > Done</button>
 
 
 
-    <h1> choose target class Test-Train Split</h1>
+    <h1> choose target class Test/Train Split</h1>
+    
     {
 
 
-csvColumns.map((col, j) => {
+(Object.keys(JSON_Clean[0])).map((col, j) => {
 
 
 return(
